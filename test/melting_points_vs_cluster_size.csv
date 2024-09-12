@@ -1,0 +1,6 @@
+cluster_size,melting_point,number_of_iterations_till_melting,added_energy,atoms_number,latent_energy
+3,646.388,1,0.01,3,0.668505
+5,769.853,1,0.01,3,2.55122
+9,882.581,1,0.01,3,13.0921
+10,954.327,1,0.01,3,17.6811
+11,970.452,1,0.01,3,23.2378

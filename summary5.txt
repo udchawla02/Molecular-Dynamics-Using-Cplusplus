@@ -1,0 +1,21 @@
+Milestone 5
+# Ensure you are in the root of your project
+(base) uditchawla@Udits-MacBook-Pro yamd %
+
+# Clean up previous build
+rm -rf buildDir
+
+# Verify the lj54.xyz file is in the correct location
+ls milestones/04/lj54.xyz
+
+# Set up the build directory
+meson setup buildDir --buildtype=debug
+
+# Change to the build directory
+cd buildDir
+
+# Compile the project
+meson compile
+
+# Run the Milestone 5 executable
+./milestones/05/milestone05

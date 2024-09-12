@@ -1,0 +1,15 @@
+Milestone 7
+
+# Ensure you are in the root of your project
+(base) uditchawla@Udits-MacBook-Pro yamd %
+
+# Clean up previous build
+rm -rf buildDir
+
+meson setup buildDir --buildtype=debug
+
+cd buildDir
+
+meson compile
+
+./milestones/07/milestone07

@@ -1,0 +1,48 @@
+Milestone 6
+# Ensure you are in the root of your project
+(base) uditchawla@Udits-MacBook-Pro yamd %
+
+# Clean up previous build
+rm -rf buildDir
+
+# Verify the lj54.xyz file is in the correct location
+ls milestones/04/lj54.xyz
+
+# Set up the build directory
+meson setup buildDir --buildtype=debug
+
+# Change to the build directory
+cd buildDir
+
+# Compile the project
+meson compile
+
+# Run the Milestone 6 executable
+./milestones/06/milestone06
+
+
+plot.py(create in buildDir/output/mileston6)
+
+import pandas as pd
+from matplotlib import pyplot as plt
+
+# Set plot parameters
+plt.rcParams["figure.figsize"] = [7.00, 3.50]
+plt.rcParams["figure.autolayout"] = True
+
+# Define columns and read the CSV file
+csv_file_path = "simulation_time_vs_atoms_number.csv"
+columns = ["atoms_number", "simulation_time"]
+df = pd.read_csv(csv_file_path, usecols=columns)
+
+# Plot the data
+plt.plot(df.atoms_number, df.simulation_time, marker='o')
+plt.xlabel("Atoms number")
+plt.ylabel("Simulation time (s)")
+plt.title("Simulation time vs Atoms number")
+plt.grid(True)
+
+# Save the plot
+output_image_path = "simulation_time_vs_atoms_number.png"
+plt.savefig(output_image_path)
+plt.show()
