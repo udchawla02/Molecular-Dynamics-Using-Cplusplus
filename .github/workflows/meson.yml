@@ -12,30 +12,38 @@ env:
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      # Checkout the repository including submodules
+      - uses: actions/checkout@v4
+        with:
+          submodules: true  # Ensure submodules are initialized
 
-    - name: Install Meson
-      run: sudo apt-get install -y meson ninja-build openmpi-bin libopenmpi-dev
+      # Install Meson, Eigen3, pkg-config, and other dependencies
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y meson ninja-build openmpi-bin libopenmpi-dev libeigen3-dev pkg-config
 
-    - name: Configure Meson
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: meson setup ${{github.workspace}}/builddir --buildtype=${{env.BUILD_TYPE}}
+      # Debug step to verify Eigen3 installation
+      - name: Verify Eigen3 Installation
+        run: |
+          pkg-config --modversion eigen3
+          pkg-config --cflags eigen3
+          pkg-config --libs eigen3
 
-    - name: Build
-      working-directory: ${{github.workspace}}/builddir
-      # Build your program with the given configuration
-      run: meson compile
+      # Configure Meson, ensuring that the build is set up correctly
+      - name: Configure Meson
+        run: |
+          PKG_CONFIG_PATH=/usr/include/eigen3 meson setup ${{github.workspace}}/builddir --buildtype=${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/builddir
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: meson test
-      
+      # Compile the project
+      - name: Build
+        working-directory: ${{github.workspace}}/builddir
+        run: meson compile
+
+      # Run tests (if applicable)
+      - name: Test
+        working-directory: ${{github.workspace}}/builddir
+        run: meson test
